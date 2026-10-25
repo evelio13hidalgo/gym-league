@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gym League</title>
+  <meta name="description" content="Ranked ladder for your workouts — climb from Bronze to Diamond, lose LP when you skip the gym.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <h1 class="logo">GYM<span>LEAGUE</span></h1>
+    <div class="topbar-actions">
+      <button id="demo-btn" class="btn ghost">Load demo season</button>
+      <button id="reset-btn" class="btn ghost">Reset</button>
+    </div>
+  </header>
+
+  <main class="layout">
+
+    <!-- Rank card -->
+    <section class="card rank-card">
+      <div id="emblem"></div>
+      <div class="rank-info">
+        <p class="eyebrow">Current rank</p>
+        <h2 id="rank-name">Bronze IV</h2>
+        <div class="lp-row">
+          <div class="lp-bar"><div id="lp-fill"></div></div>
+          <span id="rank-lp">0 LP</span>
+        </div>
+        <p id="rank-next" class="muted"></p>
+        <p id="rank-status" class="status"></p>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats">
+      <div class="stat"><span id="stat-week">0</span><label>days this week</label></div>
+      <div class="stat"><span id="stat-streak">0d</span><label>streak</label></div>
+      <div class="stat"><span id="stat-total">0</span><label>workouts</label></div>
+      <div class="stat"><span id="stat-peak">—</span><label>peak rank</label></div>
+    </section>
+
+    <!-- Log a workout -->
+    <section class="card">
+      <h3>Log workout</h3>
+      <form id="log-form" class="log-form">
+        <label>Date <input name="date" type="date" required></label>
+        <label>Type
+          <select name="type">
+            <option value="strength">Strength</option>
+            <option value="hiit">HIIT</option>
+            <option value="cardio">Cardio</option>
+            <option value="sport">Sport</option>
+            <option value="mobility">Mobility</option>
+          </select>
+        </label>
+        <label>Minutes <input name="minutes" type="number" min="5" max="300" value="60" required></label>
+        <label class="wide">Intensity (RPE) <strong id="rpe-val">7</strong>
+          <input id="rpe" name="rpe" type="range" min="1" max="10" value="7">
+        </label>
+        <label class="wide">Notes <input name="notes" type="text" maxlength="120" placeholder="Push day, hit a PR on bench…"></label>
+        <button class="btn wide" type="submit">Submit match</button>
+      </form>
+    </section>
+
+    <!-- Rating graph -->
+    <section class="card">
+      <h3>Season rating</h3>
+      <div id="chart" class="chart"></div>
+    </section>
+
+    <!-- Match history -->
+    <section class="card">
+      <h3>Match history</h3>
+      <ul id="history" class="history"></ul>
+    </section>
+
+    <!-- Ladder + rules -->
+    <aside class="card">
+      <h3>Ladder</h3>
+      <ul id="ladder" class="ladder"></ul>
+      <details class="rules">
+        <summary>How LP works</summary>
+        <ul>
+          <li>Each tier has 4 divisions (IV → I), 100 LP each.</li>
+          <li><strong>Gain:</strong> minutes ÷ 4 × intensity × type. Higher RPE earns more; mobility earns less.</li>
+          <li><strong>Hot streak:</strong> +5 LP when you've trained 3+ days in the last week.</li>
+          <li>Climbing gets harder — Diamond earns 60% of what Bronze does.</li>
+          <li>Only 2 sessions a day count (the second is worth half).</li>
+          <li><strong>Decay:</strong> after 2 rest days you lose 5 LP, then 8, 11… per idle day. High tiers decay faster, and you can be demoted.</li>
+        </ul>
+      </details>
+    </aside>
+
+  </main>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <!-- Load order matters: engine → storage → demo data → rendering → wiring -->
+  <script src="js/rank.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/demo.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
